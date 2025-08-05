@@ -1,10 +1,9 @@
 ################################################################################
 # Weekly counts in 1 year age bands up to, 20, then 5 year age bands
-# July 2025
+# August 2025
 #################################################################################
 
 library(dplyr)
-library(epiweeks)
 library(lubridate)
 
 rm(list=ls())

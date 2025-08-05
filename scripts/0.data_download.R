@@ -1,7 +1,7 @@
 #####################################################################
 # Download complete dengue cases with SIVIREP
 # SIVIREP Package: https://epiverse-trace.github.io/sivirep/
-# July 2025
+# August 2025
 #####################################################################
 
 
@@ -31,6 +31,6 @@ dat<-import_data_event(nombre_event = "DENGUE",
 dat_limpia <- limpiar_data_sivigila(data_event = dat) #standardize age in years
 
 #Save dataset
-saveRDS(dat_limpia, "data/dat_DengueSivirep2007-2023.RDS")
+saveRDS(dat_limpia, "data/dat_denguesivirep2007_2023.RDS")
 
 

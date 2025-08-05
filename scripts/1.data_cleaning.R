@@ -1,6 +1,6 @@
 ################################################################################
 # Base cleaning and variable exploration (quality control)
-# July 2025
+# August 2025
 #################################################################################
 
 
@@ -10,13 +10,12 @@ library(openxlsx)
 library(readxl)
 library(stringr)
 library(lubridate)
-library(sivirep)
 
 rm(list=ls())
 
 
 #Data
-dat <- readRDS("data/dat_DengueSivirep2007-2023.RDS")
+dat <- readRDS("data/dat_denguesivirep2007_2023.RDS")
 colnames(dat)
 
 #1. VARIABLE Age
