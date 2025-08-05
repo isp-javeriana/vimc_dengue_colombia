@@ -10,7 +10,7 @@ This folder contains all the R scripts used for data preparation:
 #### `0.data_download.R`
 Downloads raw dengue case data using the `sivirep` package.  
 The dataset is saved to the `data/` folder.  
-The current version was downloaded on **Monday, August 4 at 9:10 PM**.
+The current version was downloaded on **Monday, August 4 at 9:08 PM**.
 
 #### `1.data_cleaning.R`
 Performs validation and cleaning of key variables such as:
@@ -28,7 +28,7 @@ Age groups are binned as follows:
 
 The resulting dataset has the following structure:
 
-| department | municipality    | notif_date | year_epi | week_epi | age_group | cases |
+| department | municipality     |  onset     | year_epi | week_epi | age_group | cases |
 |------------|------------------|------------|----------|----------|-----------|--------|
 | amazonas   | el_encanto_cd    | 2007-05-25 | 2007     | 21       | 19        | 1      |
 | amazonas   | el_encanto_cd    | 2007-05-31 | 2007     | 22       | 21-25     | 1      |
