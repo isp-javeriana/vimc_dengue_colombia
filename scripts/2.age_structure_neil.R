@@ -8,13 +8,11 @@ library(lubridate)
 
 rm(list=ls())
 
-
 # data
 dengue_col <- readRDS("data/cleandat_2007_2023.RDS")
 
-
 # Create age ranges
-dengue_col <- dengue_col %>%
+dengue_col <- dengue_col |>
   mutate(grupo_edad = case_when(
     is.na(edad) ~ NA_character_,
     edad < 1 ~ "0",
@@ -34,32 +32,38 @@ dengue_col <- dengue_col %>%
     edad > 80 ~ "81+"
   ))
 
-# extract week with epiweek
-dengue_col <- dengue_col %>%
+# Extract week with epiweek
+dengue_col <- dengue_col |>
   mutate(
-    fec_not = as.Date(fec_not), 
-    epi_semana = epiweek(fec_not),
-    epi_ano = epiyear(fec_not)
+    ini_sin = as.Date(ini_sin), 
+    epi_semana = epiweek(ini_sin),
+    epi_ano = epiyear(ini_sin)
   )
 
-# Group and count
-weekly_counts <- dengue_col %>%
-  filter(!is.na(grupo_edad), !is.na(fec_not), !is.na(departamento), !is.na(municipio)) %>%
+# Group and count (onset as onset of symptoms )
+weekly_counts <- dengue_col |>
+  filter(
+    !is.na(grupo_edad),
+    !is.na(ini_sin),
+    !is.na(departamento_ocurrencia),
+    !is.na(municipio_ocurrencia)
+  ) |>
   rename(
-    department = departamento,
-    municipality = municipio,
+    department = departamento_ocurrencia,
+    municipality = municipio_ocurrencia,
     year_epi = epi_ano,
     week_epi = epi_semana,
     age_group = grupo_edad,
-    notif_date = fec_not 
-  ) %>%
-  group_by(department, municipality, notif_date, year_epi, week_epi, age_group) %>%
-  summarise(cases = n(), .groups = "drop") %>%
+    onset = ini_sin 
+  ) |>
+  group_by(department, municipality, onset, year_epi, week_epi, age_group) |>
+  summarise(cases = n(), .groups = "drop") |>
   arrange(department, municipality, year_epi, week_epi, age_group)
 
 
+
 # output
-sum(weekly_counts$cases)
+sum(weekly_counts$cases) # 1'309.552 (151 reports excluded for not having a date of onset of symptoms )
 
 #Save data with new structure
 saveRDS(weekly_counts, "data/weekly_counts_2007_2023.RDS")
