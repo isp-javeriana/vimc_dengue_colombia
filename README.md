@@ -19,6 +19,8 @@ Performs validation and cleaning of key variables such as:
 - Final condition (alive or deceased)
 - And other relevant fields in the dataset.
 
+It also filters the records, leaving only those with occurrence sites in municipalities at 2,300 meters above sea level or less, according to published [evidence for Colombia on Aedes aegypti](https://revistabiomedica.org/index.php/biomedica/article/view/3301).
+
 #### `2.age_structure_neil.R`
 Organizes weekly case counts by age group, department (admin level 2), and municipality (admin level 3).
 
