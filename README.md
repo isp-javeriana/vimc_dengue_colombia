@@ -8,7 +8,7 @@ This repository contains scripts for the processing and preparation of dengue ca
 This folder contains all the R scripts used for data preparation:
 
 #### `0.data_population.R`
-Download and organization of population data for each municipality and department in Colombia, downloaded from DANE [(National Administrative Department of Statistics of Colombia (https://www.dane.gov.co/index.php/estadisticas-por-tema/demografia-y-poblacion/proyecciones-de-poblacion]. The organized files are stored in the `data/pobcol/` folder.  
+Download and organization of population data for each municipality and department in Colombia, downloaded from DANE [(National Administrative Department of Statistics of Colombia (https://www.dane.gov.co/index.php/estadisticas-por-tema/demografia-y-poblacion/proyecciones-de-poblacion)]. The organized files are stored in the `data/pobcol/` folder.  
 To merge it with the case data, we recommend using the variables “cod_department” and “cod_municipality” which refer to the code that identifies each location at the administrative level, bearing in mind that the names of the locations may vary depending on the source (e.g., the department of Valle del Cauca may appear only as Valle depending on the file).
 
 #### `0.data_download.R`
