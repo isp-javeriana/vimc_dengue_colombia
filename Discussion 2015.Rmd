@@ -1,0 +1,83 @@
+---
+title: "Discussion 2015"
+output: html_notebook
+---
+
+```{r, echo = F}
+library(ggplot2)
+library(ggpubr)
+library(lubridate)
+library(tidyr)
+library(dplyr)
+library(tidyverse)
+library(ISOweek)
+library(readxl)
+library(zoo)
+
+dfDengue = readRDS("data/weekly_counts_2007_2023.RDS") 
+dfDengue <- dfDengue %>%
+  rename(year = year_epi,
+         week = week_epi)
+dfDengueDptWeek = dfDengue %>%
+  group_by(week, year, department) %>%
+  summarise(cases = sum(cases))
+
+```
+
+
+```{r}
+# check outbreak Zika 2015 ----
+dfDengueDptWeek %>% 
+  mutate(
+    # costruiamo una data dal numero di anno+settimana
+    time = ISOweek::ISOweek2date(paste0(year, "-W", sprintf("%02d", week), "-1"))
+  ) %>%
+  ggplot(aes(x = time, y = cases)) +
+  geom_bar(stat = "identity", aes(fill = as.factor(year))) +
+  labs(x = "", y = "N cases", 
+       title = "Weekly number of cases",
+       caption = "") +
+  theme_minimal() +
+  theme( plot.caption = element_text(size = 10, hjust = 0.5, face = "italic", colour = "gray40"),
+         plot.caption.position = "plot",
+         legend.position = "none",
+         axis.text.x = element_text(size = rel(2), angle = 90, vjust = 0.5, hjust = 1)) # ruota le etichette sull'asse x
+```
+```{r}
+dfDengueDptWeek %>%
+  filter(year %in% c(2014, 2015)) %>%
+mutate(
+    # costruiamo una data dal numero di anno+settimana
+    time = ISOweek::ISOweek2date(paste0(year, "-W", sprintf("%02d", week), "-1"))
+  ) %>%
+  ggplot(aes(x = time, y = cases)) +
+  geom_bar(stat = "identity", fill = 'darkred') +
+  labs(x = "", y = "N cases", 
+       title = "Timeline cases",
+       caption = "") +
+  theme_minimal() +
+  theme( plot.caption = element_text(size = 10, hjust = 0.5, face = "italic", colour = "gray40"),
+         plot.caption.position = "plot",
+         legend.position = "none",
+         axis.text.x = element_text(size = rel(2), angle = 90, vjust = 0.5, hjust = 1)) # ruota le etichette sull'asse x
+```
+
+```{r}
+ggplot(dfDengueDptWeek %>%
+         group_by(year, week) %>%
+         summarise(cases = sum(cases)),
+       aes(x = week, y = cases, colour = factor(year), group = year)) +
+  geom_line() +
+  labs(x = "Settimana", y = "Casi totali di Dengue", colour = "Anno") +
+  theme_minimal()
+```
+```{r}
+ggplot(dfDengueDptWeek %>%
+         group_by(year, week) %>%
+         summarise(cases = sum(cases)) %>%
+         filter(year %in% c(2013, 2014, 2015)),
+       aes(x = week, y = cases, colour = factor(year), group = year)) +
+  geom_line() +
+  labs(x = "Settimana", y = "Casi totali di Dengue", colour = "Anno") +
+  theme_minimal()
+```

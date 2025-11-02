@@ -140,6 +140,19 @@ dat_final <- bd2 |>
   mutate(elevation = as.numeric(elevation)) |>
   filter(!(elevation >= 2300))
 
+
+#Save municipalities that where filtered
+filter_municipalities <- bd2 |>
+  arrange(elevation) |> 
+  mutate(elevation = as.numeric(elevation)) |>
+  filter(!(elevation < 2300)) |>
+  select(cod_dpto_o,cod_mun_o,
+         departamento_ocurrencia,municipio_ocurrencia) %>% 
+  distinct()
+
+saveRDS(filter_municipalities, "data/filter_municipalities.RDS") #116 municipalities excluded
+
+
 ## Revisar la cantidad de municipios finales
 bd3 <- dat_final |>
   group_by(departamento_ocurrencia, municipio_ocurrencia, elevation) |>
