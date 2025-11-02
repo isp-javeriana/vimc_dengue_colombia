@@ -68,63 +68,63 @@ dengue_col <- dengue_col |>
 #-------------------------------------------------------------------------------
 #verification of weeks that generate overlapping years:
 
-dengue_colv<-dengue_col %>% 
+dengue_colv<-dengue_col |> 
   select("cod_dpto_o","cod_mun_o","ini_sin",
          "semana","ano","epi_semana","epi_ano",
-         "iso_week","iso_year","grupo_edad","age_lower") %>% 
+         "iso_week","iso_year","grupo_edad","age_lower") |> 
   arrange("ini_sin")
 
 # Week 53 of 2014
-week53_2014 <- dengue_colv %>%
+week53_2014 <- dengue_colv |>
   filter(semana == 53, ano == 2014) #Week and year that the records bring by default
 print("Week 53 of 2014 (SIVGILA):")
 print(unique(week53_2014$ini_sin))
 
 
-week53_2014 <- dengue_colv %>%
+week53_2014 <- dengue_colv |>
   filter(epi_semana == 53, epi_ano == 2014) #Week and year obtained using the epiweek and epiyear functions
 print("Week 53 of 2014 (EPI functions):")
 print(unique(week53_2014$ini_sin))
 
-week53_2014 <- dengue_colv %>%
+week53_2014 <- dengue_colv |>
   filter(iso_week == 53, iso_year == 2014) #Week and year obtained using the isoweek and isoyear functions
 print("Week 53 of 2014 (ISO functions):")
 print(unique(week53_2014$ini_sin))
 
 
 # Week 1 of 2015
-week1_2015 <- dengue_colv %>%
+week1_2015 <- dengue_colv |>
   filter(semana == "01" & ano == 2015) #Week and year that the records bring by default
 print("Week 1 of 2015:")
 print(unique(week1_2015$ini_sin)) 
 
-week1_2015 <- dengue_colv %>%
+week1_2015 <- dengue_colv |>
   filter(epi_semana == 1, epi_ano == 2015) #Week and year obtained using the epiweek and epiyear functions
 print("Week 1 of 2015:")
 print(unique(week1_2015$ini_sin))
 
-week1_2015 <- dengue_colv %>%
+week1_2015 <- dengue_colv |>
   filter(iso_week == "01" & iso_year == 2015) #Week and year obtained using the isoweek and isoyear functions
 print("Week 1 of 2015:")
 print(unique(week1_2015$ini_sin))
 
 
 #records by week
-data_grapver <- dengue_colv %>%
-  select(semana, ano, epi_semana, epi_ano, iso_week, iso_year) %>%
-  mutate(across(everything(), as.character)) %>%
-  mutate(ano_num = as.numeric(ano)) %>%
-  filter(ano_num %in% c(2013, 2014, 2015)) %>%
+data_grapver <- dengue_colv |>
+  select(semana, ano, epi_semana, epi_ano, iso_week, iso_year) |>
+  mutate(across(everything(), as.character)) |>
+  mutate(ano_num = as.numeric(ano)) |>
+  filter(ano_num %in% c(2013, 2014, 2015)) |>
   pivot_longer(
     cols = c(semana, epi_semana, iso_week),
     names_to = "variable_semana",
     values_to = "semana"
-  ) %>%
+  ) |>
   pivot_longer(
     cols = c(ano, epi_ano, iso_year),
     names_to = "variable_ano",
     values_to = "ano"
-  ) %>%
+  ) |>
   mutate(
     type = case_when(
       grepl("iso", variable_semana) ~ "ISO",
@@ -133,13 +133,13 @@ data_grapver <- dengue_colv %>%
     ),
     week_num = as.numeric(semana),
     ano_num = as.numeric(ano)
-  ) %>%
-  filter(!is.na(week_num), !is.na(ano_num)) %>%
-  group_by(type, ano_num, week_num) %>%
+  ) |>
+  filter(!is.na(week_num), !is.na(ano_num)) |>
+  group_by(type, ano_num, week_num) |>
   summarise(n_records = n(), .groups = "drop")
 
-data_grapver <- data_grapver %>%
-  filter(ano_num >= 2013, ano_num <= 2015) %>%
+data_grapver <- data_grapver |>
+  filter(ano_num >= 2013, ano_num <= 2015) |>
   mutate(time_continuous = ano_num + (week_num - 1)/52)
 
 # Graphic
@@ -192,7 +192,7 @@ weekly_counts <- dengue_col |>
   group_by(cod_department, cod_municipality, department, municipality, onset, year_epi, week_epi, age_lower) |>
   summarise(cases = n(), 
             .groups = "drop") |>
-  mutate(cod_municipality=as.character(cod_municipality)) %>% 
+  mutate(cod_municipality=as.character(cod_municipality)) |> 
   arrange(department, municipality, year_epi, week_epi, age_lower)
 
 
